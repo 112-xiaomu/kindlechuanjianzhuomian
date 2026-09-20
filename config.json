@@ -1,0 +1,13 @@
+{
+  "city_name": "碑林区",
+  "latitude": 34.2539,
+  "longitude": 108.9931,
+  "timezone": "Asia/Shanghai",
+  "title": "课表",
+  "semester_start": "2026-08-31",
+  "refresh_minutes": 15,
+  "display": {
+    "width": 800,
+    "height": 600
+  }
+}

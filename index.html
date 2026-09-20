@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="refresh" content="900">
+<title>课表</title>
+<style>
+*{box-sizing:border-box;}
+body{background:#fff;color:#111;font-family:sans-serif;margin:0;padding:16px;}
+.hd{font-size:46px;font-weight:bold;border-bottom:3px solid #111;padding-bottom:10px;overflow:hidden;}
+#clock{float:right;font-weight:normal;}
+.left{float:left;width:31%;}
+.right{float:right;width:66%;}
+.wx{margin-top:14px;}
+.wxbig{font-size:56px;font-weight:bold;line-height:1.1;}
+.wxd{font-size:22px;color:#444;margin-top:8px;line-height:1.5;}
+.quote{border:2px solid #111;padding:12px 14px;margin-top:22px;}
+.quote .qt{font-size:16px;color:#666;letter-spacing:2px;}
+.quote .qx{font-size:24px;margin-top:6px;line-height:1.5;}
+.sec{font-size:26px;font-weight:bold;margin-top:20px;}
+.sec::before{content:"";display:inline-block;width:8px;height:22px;background:#111;margin-right:10px;}
+.row{display:block;border-bottom:1px solid #ccc;padding:10px 0;font-size:26px;overflow:hidden;}
+.row.next{background:#111;color:#fff;padding:10px 8px;border-bottom:none;}
+.row.next .t{color:#ddd;}
+.row.next .n{color:#fff;}
+.row.next .l{color:#ccc;}
+.nb{display:inline-block;background:#fff;color:#111;font-size:15px;padding:1px 8px;margin-right:10px;vertical-align:middle;}
+.row .t{float:left;width:33%;color:#333;}
+.row .n{float:left;width:45%;}
+.row .l{float:right;color:#666;text-align:right;}
+.empty{font-size:24px;color:#888;padding:10px 0;}
+.fc{margin-top:10px;border-top:2px solid #111;padding-top:10px;}
+.fcell{float:left;width:33%;text-align:center;font-size:22px;}
+.fd{display:block;font-weight:bold;}
+.fw{display:block;color:#444;margin:4px 0;}
+.ft2{display:block;color:#111;}
+.ft{clear:both;font-size:16px;color:#888;margin-top:20px;}
+@media (max-width:640px){
+  .left,.right{float:none;width:100%;}
+  .left{border-bottom:2px solid #111;padding-bottom:14px;}
+}
+</style>
+</head>
+<body>
+<div class="hd">9月20日 周日<span id="clock">22:04</span></div>
+<div class="left">
+  <div class="wx">
+    <div class="wxbig">阴 18°</div>
+    <div class="wxd">碑林区<br>湿度 89%　风速 8 km/h　最高20° 最低18°</div>
+  </div>
+  <div class="quote">
+    <div class="qt">每日一言</div>
+    <div class="qx">愿你眼里有光，心中有暖。</div>
+  </div>
+</div>
+<div class="right">
+  <div class="sec">今日课程</div>
+  <div class="empty">今天没有课，好好休息 ☺</div>
+  <div class="sec">明日课程</div>
+  <div class="row"><span class="t">08:00–08:50</span><span class="n">自然辩证法概论</span><span class="l">教6-303</span></div>
+  <div class="sec">未来三天</div>
+  <div class="fc"><div class="fcell"><span class="fd">周一</span><span class="fw">毛毛雨</span><span class="ft2">24°/16°</span></div><div class="fcell"><span class="fd">周二</span><span class="fw">阴</span><span class="ft2">25°/16°</span></div><div class="fcell"><span class="fd">周三</span><span class="fw">毛毛雨</span><span class="ft2">22°/18°</span></div></div>
+</div>
+<div class="ft">更新于 22:04（每 15 分钟自动刷新）</div>
+<script>
+var c=document.getElementById("clock");
+function t(){var n=new Date();var h=n.getHours();var m=n.getMinutes();if(m<10)m="0"+m;c.innerHTML=h+":"+m;}
+t();setInterval(t,1000);
+</script>
+</body>
+</html>
