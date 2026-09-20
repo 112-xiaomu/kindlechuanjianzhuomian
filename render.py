@@ -682,6 +682,13 @@ def main():
     render_png(cfg, weather, schedule, now, png_path, portrait=False)
     render_png(cfg, weather, schedule, now, png_p_path, portrait=True)
 
+    # 横屏旋转版：display.png(800x600) 精确转置成 600x800，供 Kindle 横放显示
+    # fbink 不做软件旋转，旋转必须在渲染端完成；两个方向供用户按挂放方向二选一
+    from PIL import Image
+    _land = Image.open(png_path)
+    _land.transpose(Image.ROTATE_270).save(os.path.join(BASE, "display_landscape_cw.png"))
+    _land.transpose(Image.ROTATE_90).save(os.path.join(BASE, "display_landscape_ccw.png"))
+
     print(f"渲染完成: {now.isoformat()}")
     print(f"  HTML -> {html_path}")
     print(f"  PNG  -> {png_path}")

@@ -33,7 +33,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -f index.html display.png display_portrait.png
+          git add -f index.html display.png display_portrait.png display_landscape_cw.png display_landscape_ccw.png
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
