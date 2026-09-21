@@ -190,9 +190,9 @@ def find_font():
 
 # ---------------------------------------------------------------- HTML ----
 
-def schedule_rows_html(items, next_e=None, badge="下一节"):
+def schedule_rows_html(items, next_e=None, badge="下一节", empty_text="今天没有课，好好休息 ☺"):
     if not items:
-        return '<div class="empty">今天没有课，好好休息 ☺</div>'
+        return f'<div class="empty">{empty_text}</div>'
     rows = []
     for e in items:
         loc = e.get("location") or ""
@@ -324,7 +324,8 @@ t();setInterval(t,1000);
 </body>
 </html>""" % (
         refresh, title, date_str, time_str, wx_big, city, detail_line, quote,
-        schedule_rows_html(today_items, nxt, badge), schedule_rows_html(tomorrow_items),
+        schedule_rows_html(today_items, nxt, badge),
+        schedule_rows_html(tomorrow_items, empty_text="明天没有课，睡个好觉 ☺"),
         fc_html, f"{now.hour:02d}:{now.minute:02d}", int(cfg.get("refresh_minutes", 15)),
     )
 
