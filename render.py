@@ -18,6 +18,9 @@ BASE = os.path.dirname(os.path.abspath(__file__))
 
 WEEKDAYS = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
 
+# 实验室作息（早 / 午 / 晚）；晚上按 19:30-22:30 理解
+LAB_SCHEDULE = [("08:00", "12:00"), ("14:00", "18:00"), ("19:30", "22:30")]
+
 # WMO 天气代码 -> 中文
 WMO = {
     0: "晴", 1: "大致晴朗", 2: "多云", 3: "阴",
@@ -250,6 +253,7 @@ def render_html(cfg, weather, schedule, now):
     nxt = next_item(today_items, now)
     hm = f"{now.hour:02d}:{now.minute:02d}"
     badge = "进行中" if nxt and nxt["start"] <= hm < nxt["end"] else "下一节"
+    lab_str = " · ".join(f"{a}-{b}" for a, b in LAB_SCHEDULE)
 
     return """<!DOCTYPE html>
 <html>
@@ -315,7 +319,7 @@ body{background:#fff;color:#111;font-family:sans-serif;margin:0;padding:16px;}
   <div class="sec">未来三天</div>
   <div class="fc">%s</div>
 </div>
-<div class="ft">更新于 %s（每 %d 分钟自动刷新）</div>
+<div class="ft">实验室 %s　｜　更新于 %s（每 %d 分钟自动刷新）</div>
 <script>
 var c=document.getElementById("clock");
 function t(){var n=new Date();var h=n.getHours();var m=n.getMinutes();if(m<10)m="0"+m;c.innerHTML=h+":"+m;}
@@ -326,7 +330,7 @@ t();setInterval(t,1000);
         refresh, title, date_str, time_str, wx_big, city, detail_line, quote,
         schedule_rows_html(today_items, nxt, badge),
         schedule_rows_html(tomorrow_items, empty_text="明天没有课，睡个好觉 ☺"),
-        fc_html, f"{now.hour:02d}:{now.minute:02d}", int(cfg.get("refresh_minutes", 15)),
+        fc_html, lab_str, f"{now.hour:02d}:{now.minute:02d}", int(cfg.get("refresh_minutes", 15)),
     )
 
 
@@ -446,6 +450,21 @@ def draw_header(c, W, now):
     c.rtext(W - mx, 24, time_str, 44)
     d.line([(mx, 92), (W - mx, 92)], fill=0, width=3)
     return mx
+
+
+def draw_lab_schedule(c, x, y, now):
+    """实验室作息：当前时段深色，其余浅灰"""
+    hm = f"{now.hour:02d}:{now.minute:02d}"
+    f16 = c.f(16)
+    c.text((x, y), "实验室", 16, fill=120)
+    x += c.d.textlength("实验室", font=f16) + 10
+    for i, (a, b) in enumerate(LAB_SCHEDULE):
+        s = f"{a}-{b}"
+        c.text((x, y), s, 16, fill=0 if a <= hm < b else 140)
+        x += c.d.textlength(s, font=f16)
+        if i < len(LAB_SCHEDULE) - 1:
+            c.text((x, y), " · ", 16, fill=140)
+            x += c.d.textlength(" · ", font=f16)
 
 
 def draw_course_rows(c, x, y, w, items, row_h=46, name_size=26, next_e=None,
@@ -611,6 +630,7 @@ def render_png(cfg, weather, schedule, now, out_path, portrait=False):
         y = draw_section_label(c, cx0, y, "明日课程")
         y = draw_course_rows(c, cx0, y, cw, tm_items, row_h=42, max_rows=tm_max,
                              empty_text="明天没有课")
+        draw_lab_schedule(c, cx0, y + 14, now)
 
         # 底部：三日预报（横跨全宽）
         if weather:
@@ -625,6 +645,7 @@ def render_png(cfg, weather, schedule, now, out_path, portrait=False):
         c.text((mx + 104, 156), f"{temp}°", 64)
         c.text((mx + 104, 232), wtxt, 26)
         c.text((mx, 262), detail, 20, fill=120)
+        draw_lab_schedule(c, mx, 286, now)
 
         y = 306
         d.line([(mx, y), (right, y)], fill=210, width=2)
